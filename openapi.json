@@ -1,0 +1,800 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "contact": {
+      "email": "estimate.simulator@gmail.com"
+    },
+    "description": "APIインタフェース定義",
+    "title": "APIインタフェース定義",
+    "version": "0.0.1"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080/"
+    }
+  ],
+  "tags": [
+    {
+      "name": "simulator",
+      "description": "Operations about simulator"
+    },
+    {
+      "name": "question",
+      "description": "Operation about questioon"
+    }
+  ],
+  "paths": {
+    "/simulation": {
+      "get": {
+        "tags": [
+          "simulator"
+        ],
+        "summary": "トップ画面に表示するシュミレーターを取得",
+        "description": "トップ画面に表示するシュミレーターの一覧を取得",
+        "operationId": "getSimulations",
+        "responses": {
+          "200": {
+            "description": "データ取得成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Simulations"
+                    },
+                    "success": {
+                      "type": "boolean",
+                      "description": "成功ならtrueを、失敗ならfalseを返す"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400ErrorResponse"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "simulator"
+        ],
+        "summary": "新しいシュミレーター作成",
+        "description": "新しいシュミレーターの大枠を作成する",
+        "operationId": "PostSimulator",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/Simulator"
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/SuccessResponse"
+          },
+          "400": {
+            "$ref": "#/components/responses/400ErrorResponse"
+          }
+        }
+      }
+    },
+    "/simulation/duplicate": {
+      "post": {
+        "tags": [
+          "simulator"
+        ],
+        "summary": "シュミレーションを複製",
+        "description": "シュミレーションを複製",
+        "operationId": "postSimulationDuplicate",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/SimulationDuplicate"
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/SuccessResponse"
+          },
+          "400": {
+            "$ref": "#/components/responses/400ErrorResponse"
+          }
+        }
+      }
+    },
+    "/simulation/{id}": {
+      "get": {
+        "tags": [
+          "simulator"
+        ],
+        "summary": "編集する対象のシュミレーションのデータを取得",
+        "description": "編集する対象のシュミレーションのデータを取得",
+        "operationId": "getSimulationData",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Simulation_id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "データ取得成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/SimulationData"
+                    },
+                    "success": {
+                      "type": "boolean",
+                      "description": "成功ならtrueを、失敗ならfalseを返す"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400ErrorResponse"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "simulator"
+        ],
+        "summary": "シミュレータの削除",
+        "description": "シミュレータの削除",
+        "operationId": "deleteSimulator",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Simulation_id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "データの削除成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "description": "成功ならtrueを、失敗ならfalseを返す"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400ErrorResponse"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "simulator"
+        ],
+        "summary": "シュミレーター編集",
+        "description": "シュミレーターのデータを更新する",
+        "operationId": "PutSimulator",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Simulation_id"
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/Simulator"
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/SuccessResponse"
+          },
+          "400": {
+            "$ref": "#/components/responses/400ErrorResponse"
+          }
+        }
+      }
+    },
+    "/simulator/{id}": {
+      "get": {
+        "tags": [
+          "simulator"
+        ],
+        "summary": "シュミレーターを取得",
+        "description": "シュミレーターを取得",
+        "operationId": "getFrontendSimulation",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Simulation_id"
+          }
+        ],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "データ取得成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/SimulatorData"
+                    },
+                    "success": {
+                      "type": "boolean",
+                      "description": "成功ならtrueを、失敗ならfalseを返す"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400ErrorResponse"
+          }
+        }
+      }
+    },
+    "/question": {
+      "post": {
+        "tags": [
+          "question"
+        ],
+        "summary": "新しい質問を作成",
+        "description": "新しい質問を作成",
+        "operationId": "PostQuestion",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/Question"
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/PostQuestionSuccessResponse"
+          },
+          "400": {
+            "$ref": "#/components/responses/400ErrorResponse"
+          }
+        }
+      }
+    },
+    "/question/{id}": {
+      "get": {
+        "tags": [
+          "question"
+        ],
+        "summary": "質問を取得する",
+        "description": "質問を取得する",
+        "operationId": "GettQuestion",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Question_id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "データ取得成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/QuestionData"
+                    },
+                    "success": {
+                      "type": "boolean",
+                      "description": "成功ならtrueを、失敗ならfalseを返す"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400ErrorResponse"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "question"
+        ],
+        "summary": "質問を編集する",
+        "description": "既存の質問を編集する",
+        "operationId": "PostQuestionId",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Question_id"
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/QuestionEdit"
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/SuccessResponse"
+          },
+          "400": {
+            "$ref": "#/components/responses/400ErrorResponse"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "question"
+        ],
+        "summary": "質問を削除する",
+        "description": "質問を削除する",
+        "operationId": "DeleteQuestion",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Question_id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/SuccessResponse"
+          },
+          "400": {
+            "$ref": "#/components/responses/400ErrorResponse"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "Credentials or access token for API"
+      }
+    },
+    "parameters": {
+      "Authorization": {
+        "in": "header",
+        "name": "Authorization",
+        "schema": {
+          "type": "string"
+        },
+        "required": true
+      },
+      "Simulation_id": {
+        "name": "id",
+        "in": "path",
+        "description": "simulation_id",
+        "required": true,
+        "schema": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "Question_id": {
+        "name": "id",
+        "in": "path",
+        "description": "question_id",
+        "required": true,
+        "schema": {
+          "type": "integer",
+          "format": "int64"
+        }
+      }
+    },
+    "requestBodies": {
+      "Simulator": {
+        "description": "シュミレーター",
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/SimulationTitle"
+            }
+          }
+        }
+      },
+      "SimulationDuplicate": {
+        "description": "シュミレーター（複製）",
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/SimulationDuplicateTitle"
+            }
+          }
+        }
+      },
+      "Question": {
+        "description": "質問新規作成",
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Question"
+            }
+          }
+        }
+      },
+      "QuestionEdit": {
+        "description": "質問編集",
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/QuestionEdit"
+            }
+          }
+        }
+      },
+      "QuestionDelete": {
+        "description": "質問削除",
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "description": "識別子"
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "PostQuestionSuccessResponse": {
+        "description": "質問の新規作成成功時のレスポンス",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "format": "uuid",
+                  "description": "質問のID"
+                },
+                "success": {
+                  "type": "boolean",
+                  "description": "成功ならtrueを、失敗ならfalseを返す"
+                }
+              }
+            }
+          }
+        }
+      },
+      "SuccessResponse": {
+        "description": "データ取得成功",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "description": "成功ならtrueを、失敗ならfalseを返す"
+                }
+              }
+            }
+          }
+        }
+      },
+      "400ErrorResponse": {
+        "description": "データ取得失敗",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorMessage"
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "Simulations": {
+        "type": "array",
+        "description": "シュミレーションデータ",
+        "items": {
+          "$ref": "#/components/schemas/Simulation"
+        }
+      },
+      "Simulation": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "識別子"
+          },
+          "title": {
+            "type": "string",
+            "description": "タイトル",
+            "example": "タイトル"
+          },
+          "embedded_code": {
+            "type": "string",
+            "description": "埋め込みコード。埋め込んだ結果正常に動作しない場合はnullで返す",
+            "example": "<iframe width='100%'height='100%' src='〜〜' frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture'allowfullscreen></iframe>"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date",
+            "description": "作成日"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date",
+            "description": "更新日"
+          }
+        }
+      },
+      "SimulationTitle": {
+        "type": "object",
+        "properties": {
+          "similator_title": {
+            "description": "Title of the simulator",
+            "type": "string",
+            "example": "タイトル",
+            "minLength": 1,
+            "maxLength": 40
+          },
+          "inquiries": {
+            "description": "URL for inquiries",
+            "type": "string",
+            "example": "xxxxxxx.xxx",
+            "minLength": 5,
+            "maxLength": 300
+          }
+        },
+        "required": [
+          "similator_title",
+          "inquiries"
+        ]
+      },
+      "SimulationDuplicateTitle": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "識別子",
+            "type": "string",
+            "format": "uuid"
+          },
+          "similator_title": {
+            "description": "Title of the simulator",
+            "type": "string",
+            "example": "タイトル",
+            "minLength": 1,
+            "maxLength": 40
+          },
+          "inquiries": {
+            "description": "URL for inquiries",
+            "type": "string",
+            "example": "xxxxxxx.xxx",
+            "minLength": 5,
+            "maxLength": 300
+          }
+        },
+        "required": [
+          "similator_title",
+          "inquiries"
+        ]
+      },
+      "SimulationData": {
+        "type": "object",
+        "properties": {
+          "simulation_id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "識別子"
+          },
+          "title": {
+            "type": "string",
+            "description": "タイトル",
+            "example": "タイトル"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date",
+            "description": "作成日"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date",
+            "description": "更新日"
+          },
+          "questions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/QuestionData"
+            }
+          }
+        }
+      },
+      "Question": {
+        "type": "object",
+        "properties": {
+          "previous_option_id": {
+            "type": "string",
+            "description": "親の質問があればidを指定",
+            "format": "uuid"
+          },
+          "question_title": {
+            "type": "string",
+            "example": "Googleマップなど、他社のツールを使用しますか？"
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "properties": {
+                "answer": {
+                  "type": "string",
+                  "description": "回答タイトル",
+                  "example": "はい"
+                },
+                "description": {
+                  "type": "string",
+                  "description": "回答の説明",
+                  "example": "回答の説明,回答の説明"
+                },
+                "price": {
+                  "type": "number",
+                  "description": "価格",
+                  "example": "10000"
+                },
+                "image_path": {
+                  "type": "string",
+                  "description": "画像のパス",
+                  "example": "https:/xxxxx.xx/xxx.jpg"
+                }
+              }
+            },
+            "required": [
+              "answer",
+              "price"
+            ]
+          }
+        },
+        "required": [
+          "question_title",
+          "options"
+        ]
+      },
+      "QuestionEdit": {
+        "type": "object",
+        "properties": {
+          "question": {
+            "$ref": "#/components/schemas/QuestionData"
+          }
+        }
+      },
+      "QuestionData": {
+        "type": "object",
+        "properties": {
+          "question_id": {
+            "type": "string",
+            "description": "親の質問があればidを指定",
+            "format": "uuid"
+          },
+          "previous_option_id": {
+            "type": "string",
+            "description": "親の質問があればidを指定",
+            "format": "uuid"
+          },
+          "question_title": {
+            "type": "string",
+            "example": "Googleマップなど、他社のツールを使用しますか？"
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "properties": {
+                "option_id": {
+                  "type": "integer",
+                  "description": "Option_id",
+                  "example": 3
+                },
+                "answer": {
+                  "type": "string",
+                  "description": "回答タイトル",
+                  "example": "はい"
+                },
+                "description": {
+                  "type": "string",
+                  "description": "回答の説明",
+                  "example": "回答の説明,回答の説明"
+                },
+                "price": {
+                  "type": "number",
+                  "description": "価格",
+                  "example": "10000"
+                },
+                "image_path": {
+                  "type": "string",
+                  "description": "画像のパス",
+                  "example": "https:/xxxxx.xx/xxx.jpg"
+                }
+              }
+            }
+          }
+        }
+      },
+      "SimulatorData": {
+        "type": "object",
+        "properties": {
+          "question_title": {
+            "type": "string",
+            "example": "Googleマップなど、他社のツールを使用しますか？"
+          },
+          "question_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "properties": {
+                "option_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "answer": {
+                  "type": "string",
+                  "description": "回答タイトル",
+                  "example": "はい"
+                },
+                "description": {
+                  "type": "string",
+                  "description": "回答の説明",
+                  "example": "回答の説明,回答の説明"
+                },
+                "price": {
+                  "type": "number",
+                  "description": "価格",
+                  "example": "10000"
+                },
+                "image_path": {
+                  "type": "string",
+                  "description": "画像のパス",
+                  "example": "https:/xxxxx.xx/xxx.jpg"
+                },
+                "question": {
+                  "properties": {
+                    "question_title": {
+                      "type": "string",
+                      "example": "Googleマップなど、他社のツールを使用しますか？"
+                    },
+                    "question_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "options": {
+                      "type": "array",
+                      "example": []
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "ErrorMessage": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "default": "Invalid request",
+            "description": "エラーメッセージ"
+          },
+          "success": {
+            "type": "boolean",
+            "default": false,
+            "description": "成功ならtrueを、失敗ならfalseを返す"
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "Bearer": []
+    }
+  ]
+}

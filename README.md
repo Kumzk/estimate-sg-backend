@@ -14,8 +14,6 @@ Build a simple laravel development environment with docker-compose.
 ```bash
 $ git clone git@github.com:ucan-lab/docker-laravel.git
 $ cd docker-laravel
-$ make create-project # Install the latest Laravel project
-$ make install-recommend-packages # Not required
 ```
 
 http://localhost
