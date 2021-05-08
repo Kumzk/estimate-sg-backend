@@ -2,8 +2,9 @@
 
 namespace App\Providers;
 
+use App\Services\Auth\CognitoGuard;
+use App\Services\Cognito\JWTVerifier;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Gate;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -25,6 +26,12 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        $this->app['auth']->extend('cognito', function ($app, $name, array $config) {
+            return new CognitoGuard(
+                new JWTVerifier(),
+                $app['request'],
+                $this->app['auth']->createUserProvider($config['provider'])
+            );
+        });
     }
 }
