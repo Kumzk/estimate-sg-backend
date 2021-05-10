@@ -10,10 +10,14 @@
   },
   "servers": [
     {
-      "url": "http://localhost:80/api"
+      "url": "http://localhost:80/api/"
     }
   ],
   "tags": [
+    {
+      "name" :  "user",
+      "description": "Operations about user"
+    },
     {
       "name": "simulator",
       "description": "Operations about simulator"
@@ -24,6 +28,40 @@
     }
   ],
   "paths": {
+    "/user": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "ユーザーをAPI側にも登録",
+        "description": "ユーザーをAPI側にも登録",
+        "operationId": "postUser",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/User"
+        },
+        "responses": {
+          "200": {
+            "description": "データ登録成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "description": "成功ならtrueを、失敗ならfalseを返す"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400ErrorResponse"
+          }
+        }
+      }
+    },
     "/simulation": {
       "get": {
         "tags": [
@@ -380,6 +418,17 @@
       }
     },
     "requestBodies": {
+      "User": {
+        "description": "ユーザー登録",
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/User"
+            }
+          }
+        }
+      },
       "Simulator": {
         "description": "シュミレーター",
         "required": true,
@@ -488,6 +537,21 @@
       }
     },
     "schemas": {
+      "User" :{
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "メールアドレス"
+          },
+          "cognito_sub": {
+            "type": "string",
+            "description": "cognito_sub",
+            "example": "cognito_sub"
+          }
+        }
+      },
       "Simulations": {
         "type": "array",
         "description": "シュミレーションデータ",
