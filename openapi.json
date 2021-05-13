@@ -36,9 +36,6 @@
         "summary": "ユーザーをAPI側にも登録",
         "description": "ユーザーをAPI側にも登録",
         "operationId": "postUser",
-        "requestBody": {
-          "$ref": "#/components/requestBodies/User"
-        },
         "responses": {
           "200": {
             "description": "データ登録成功",

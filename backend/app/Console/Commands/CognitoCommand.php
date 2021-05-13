@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use App\Models\User;
 use Aws\CognitoIdentityProvider\CognitoIdentityProviderClient;
 use Illuminate\Console\Command;
 
@@ -99,8 +98,8 @@ class CognitoCommand extends Command
                 ],
                 'SecretHash' => $this->cognitoSecretHash($email),
             ]);
-        User::create(['name' => $email, 'cognito_sub' => $response->toArray()['UserSub']]);
         $this->output->success(sprintf('created %s', $email));
+        $this->output->writeln($response->toArray()['UserSub']);
     }
 
     private function auth(string $email, string $password)
