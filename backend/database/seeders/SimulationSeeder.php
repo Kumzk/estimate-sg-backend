@@ -24,7 +24,7 @@ class SimulationSeeder extends Seeder
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
         $user = \App\Models\User::firstOrCreate([
-            'name' => 'test1@example.com',
+            'email' => 'test1@example.com',
         ], [
             'cognito_sub' => '89a88b81-be7e-4009-8542-c43afc2b9817',
         ]);
