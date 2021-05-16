@@ -31,14 +31,25 @@ class UserController extends Controller
 
         $decoded = $this->JWTVerifier->decode($jwt);
 
-        if ($decoded) {
-            $user = new User();
-            $user->cognito_sub = $decoded->sub;
-            if ($user->save()) {
-                return $decoded->sub;
+        if (!empty($decoded->sub)) {
+            if (empty(User::where('cognito_sub', $decoded->sub)->first())) {
+                User::create([
+                    'email' => $decoded->email,
+                    'cognito_sub' => $decoded->sub,
+                ]);
+
+                return response()->json(['success' => true], 200);
+            } else {
+                return response()->json([
+                    'message' => 'This User already exists',
+                    'success' => false,
+                ], 400);
             }
         }
 
-        return $decoded;
+        return response()->json([
+            'message' => 'Invalid request',
+            'success' => false,
+        ], 400);
     }
 }

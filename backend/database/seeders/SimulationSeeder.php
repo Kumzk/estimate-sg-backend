@@ -25,6 +25,8 @@ class SimulationSeeder extends Seeder
 
         $user = \App\Models\User::firstOrCreate([
             'cognito_sub' => '89a88b81-be7e-4009-8542-c43afc2b9817',
+        ], [
+            'email' => 'test1@example.com', //[password] => Password-1
         ]);
 
         for ($i = 1; $i < 5; ++$i) {

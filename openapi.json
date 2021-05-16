@@ -28,7 +28,7 @@
     }
   ],
   "paths": {
-    "/user": {
+    "/signup": {
       "post": {
         "tags": [
           "user"
