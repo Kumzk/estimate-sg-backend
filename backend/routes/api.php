@@ -1,7 +1,7 @@
 <?php
 
+use App\Http\Controllers\API\SimulationsController;
 use App\Http\Controllers\API\UserController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,9 +16,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::group(['namespace' => 'API'], static function (): void {
-    Route::post('/signup', [UserController::class, 'store']);
+    Route::post('signup', [UserController::class, 'store']);
 
-    // Route::middleware('auth:api')->get('/user', function (Request $request) {
-    //     return $request->user();
-    // });
+    Route::group(['middleware' => 'auth:api'], static function (): void {
+        Route::get('simulations', [SimulationsController::class, 'index']);
+    });
 });

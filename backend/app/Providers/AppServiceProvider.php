@@ -23,6 +23,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+       // Simulation
+        $this->app->bind(
+            \App\Repositories\SimulationRepositoryInterface::class,
+            \App\Repositories\SimulationRepository::class
+        );
     }
 }

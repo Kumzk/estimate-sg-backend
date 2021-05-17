@@ -33,7 +33,7 @@
         "tags": [
           "user"
         ],
-        "summary": "ユーザーをAPI側にも登録",
+        "summary": "ユーザーをAPI側にも登録 -> done",
         "description": "ユーザーをAPI側にも登録",
         "operationId": "postUser",
         "responses": {
@@ -59,12 +59,12 @@
         }
       }
     },
-    "/simulation": {
+    "/simulations": {
       "get": {
         "tags": [
           "simulator"
         ],
-        "summary": "トップ画面に表示するシュミレーターを取得",
+        "summary": "トップ画面に表示するシュミレーターを取得  -> done",
         "description": "トップ画面に表示するシュミレーターの一覧を取得",
         "operationId": "getSimulations",
         "responses": {
@@ -96,7 +96,7 @@
         "tags": [
           "simulator"
         ],
-        "summary": "新しいシュミレーター作成",
+        "summary": "新しいシュミレーター作成 -> WIP",
         "description": "新しいシュミレーターの大枠を作成する",
         "operationId": "PostSimulator",
         "requestBody": {
