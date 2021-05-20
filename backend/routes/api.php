@@ -19,6 +19,7 @@ Route::group(['namespace' => 'API'], static function (): void {
     Route::post('signup', [UserController::class, 'store']);
 
     Route::group(['middleware' => 'auth:api'], static function (): void {
-        Route::get('simulations', [SimulationsController::class, 'index']);
+        Route::get('simulation', [SimulationsController::class, 'index']);
+        Route::post('simulation', [SimulationsController::class, 'store']);
     });
 });

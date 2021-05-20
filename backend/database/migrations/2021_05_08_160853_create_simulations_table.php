@@ -15,9 +15,9 @@ class CreateSimulationsTable extends Migration
     {
         Schema::create('simulations', function (Blueprint $table) {
             $table->id();
-            $table->string('embedded_code');
+            #$table->string('embedded_code')->default("<iframe width='100%'height='100%' src='〜〜' frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture'allowfullscreen></iframe>");
             $table->string('inquiries');
-            $table->string('title');
+            $table->string('simulator_title');
             $table->foreignId('user_id')->constrained();
             $table->timestamps();
         });

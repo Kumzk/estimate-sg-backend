@@ -12,16 +12,10 @@ class Simulation extends Model
     use HasFactory;
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
+     * The preferences that we don't want to show to the client.
      */
-    protected $fillable = [
-        'embedded_code',
-        'inquiries',
-        'title',
-        'user_id',
-    ];
+    protected $guarded = ['id'];
+    protected $hidden = ['created_at', 'updated_at'];
 
     public function user(): BelongsTo
     {

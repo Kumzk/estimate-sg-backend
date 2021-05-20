@@ -59,7 +59,7 @@
         }
       }
     },
-    "/simulations": {
+    "/simulation": {
       "get": {
         "tags": [
           "simulator"
@@ -96,7 +96,7 @@
         "tags": [
           "simulator"
         ],
-        "summary": "新しいシュミレーター作成 -> WIP",
+        "summary": "新しいシュミレーター作成 -> done",
         "description": "新しいシュミレーターの大枠を作成する",
         "operationId": "PostSimulator",
         "requestBody": {
@@ -507,7 +507,7 @@
         }
       },
       "SuccessResponse": {
-        "description": "データ取得成功",
+        "description": "成功",
         "content": {
           "application/json": {
             "schema": {
@@ -589,7 +589,7 @@
       "SimulationTitle": {
         "type": "object",
         "properties": {
-          "similator_title": {
+          "simulator_title": {
             "description": "Title of the simulator",
             "type": "string",
             "example": "タイトル",
@@ -599,13 +599,13 @@
           "inquiries": {
             "description": "URL for inquiries",
             "type": "string",
-            "example": "xxxxxxx.xxx",
+            "example": "kmzk.322@gmail.com",
             "minLength": 5,
             "maxLength": 300
           }
         },
         "required": [
-          "similator_title",
+          "simulator_title",
           "inquiries"
         ]
       },
@@ -617,7 +617,7 @@
             "type": "string",
             "format": "uuid"
           },
-          "similator_title": {
+          "simulator_title": {
             "description": "Title of the simulator",
             "type": "string",
             "example": "タイトル",
@@ -627,13 +627,13 @@
           "inquiries": {
             "description": "URL for inquiries",
             "type": "string",
-            "example": "xxxxxxx.xxx",
+            "example": "kmzk.322@gmail.com",
             "minLength": 5,
             "maxLength": 300
           }
         },
         "required": [
-          "similator_title",
+          "simulator_title",
           "inquiries"
         ]
       },

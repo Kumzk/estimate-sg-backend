@@ -7,5 +7,7 @@ use Illuminate\Database\Eloquent\Collection;
 
 interface SimulationRepositoryInterface
 {
-    public function getUserSimulations(User $user): Collection;
+    public function getUserSimulations(): Collection;
+
+    public function createSimulation(array $params): bool;
 }

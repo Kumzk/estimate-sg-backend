@@ -31,8 +31,8 @@ class SimulationSeeder extends Seeder
 
         for ($i = 1; $i < 5; ++$i) {
             $user->simulations()->create([
-                'embedded_code' => "<iframe width='100%'height='100%' src='〜〜' frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture'allowfullscreen></iframe>",
-                'title' => 'web制作見積もりシュミレーション'.$i,
+               # 'embedded_code' => "<iframe width='100%'height='100%' src='〜〜' frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture'allowfullscreen></iframe>",
+                'simulator_title' => 'web制作見積もりシュミレーション'.$i,
                 'inquiries' => 'test'.$i.'@gmail.com',
             ]);
         }
