@@ -275,8 +275,8 @@
         "tags": [
           "question"
         ],
-        "summary": "新しい質問を作成",
-        "description": "新しい質問を作成",
+        "summary": "シュミレーションで一番最初の質問",
+        "description": "そのシュミレーションで一番最初の質問を保存する際にpostする",
         "operationId": "PostQuestion",
         "requestBody": {
           "$ref": "#/components/requestBodies/Question"
@@ -291,54 +291,17 @@
         }
       }
     },
-    "/question/{id}": {
-      "get": {
-        "tags": [
-          "question"
-        ],
-        "summary": "質問を取得する",
-        "description": "質問を取得する",
-        "operationId": "GettQuestion",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/Question_id"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "データ取得成功",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/QuestionData"
-                    },
-                    "success": {
-                      "type": "boolean",
-                      "description": "成功ならtrueを、失敗ならfalseを返す"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "$ref": "#/components/responses/400ErrorResponse"
-          }
-        }
-      },
+    "/question/{simulation_id}": {
       "put": {
         "tags": [
           "question"
         ],
-        "summary": "質問を編集する",
-        "description": "既存の質問を編集する",
+        "summary": "質問を更新、削除する",
+        "description": "既存のシュミレーションの質問を編集、削除する際にputする",
         "operationId": "PostQuestionId",
         "parameters": [
           {
-            "$ref": "#/components/parameters/Question_id"
+            "$ref": "#/components/parameters/Simulation_id"
           }
         ],
         "requestBody": {
@@ -346,28 +309,7 @@
         },
         "responses": {
           "200": {
-            "$ref": "#/components/responses/SuccessResponse"
-          },
-          "400": {
-            "$ref": "#/components/responses/400ErrorResponse"
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "question"
-        ],
-        "summary": "質問を削除する",
-        "description": "質問を削除する",
-        "operationId": "DeleteQuestion",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/Question_id"
-          }
-        ],
-        "responses": {
-          "200": {
-            "$ref": "#/components/responses/SuccessResponse"
+            "$ref": "#/components/responses/PutQuestionSuccessResponse"
           },
           "400": {
             "$ref": "#/components/responses/400ErrorResponse"
@@ -465,7 +407,7 @@
         "content": {
           "application/json": {
             "schema": {
-              "$ref": "#/components/schemas/QuestionEdit"
+              "$ref": "#/components/schemas/QuestionData"
             }
           }
         }
@@ -486,16 +428,39 @@
     },
     "responses": {
       "PostQuestionSuccessResponse": {
-        "description": "質問の新規作成成功時のレスポンス",
+        "description": "質問の新規作成、成功時のレスポンス",
         "content": {
           "application/json": {
             "schema": {
               "type": "object",
               "properties": {
-                "id": {
-                  "type": "string",
-                  "format": "uuid",
-                  "description": "質問のID"
+                "simulation_id": {
+                  "type": "integer",
+                  "format": "id",
+                  "description": "シュミレーションのID",
+                  "example": "1"
+                },
+                "data": {
+                  "$ref": "#/components/schemas/QuestionWithId"
+                },
+                "success": {
+                  "type": "boolean",
+                  "description": "成功ならtrueを、失敗ならfalseを返す"
+                }
+              }
+            }
+          }
+        }
+      },
+      "PutQuestionSuccessResponse": {
+        "description": "質問の更新、成功時のレスポンス",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "$ref": "#/components/schemas/QuestionData"
                 },
                 "success": {
                   "type": "boolean",
@@ -671,11 +636,6 @@
       "Question": {
         "type": "object",
         "properties": {
-          "previous_option_id": {
-            "type": "string",
-            "description": "親の質問があればidを指定",
-            "format": "uuid"
-          },
           "question_title": {
             "type": "string",
             "example": "Googleマップなど、他社のツールを使用しますか？"
@@ -717,59 +677,84 @@
           "options"
         ]
       },
-      "QuestionEdit": {
-        "type": "object",
-        "properties": {
-          "question": {
-            "$ref": "#/components/schemas/QuestionData"
-          }
-        }
-      },
-      "QuestionData": {
+      "QuestionWithId": {
         "type": "object",
         "properties": {
           "question_id": {
-            "type": "string",
-            "description": "親の質問があればidを指定",
-            "format": "uuid"
-          },
-          "previous_option_id": {
-            "type": "string",
-            "description": "親の質問があればidを指定",
-            "format": "uuid"
+            "type": "integer",
+            "example": "1"
           },
           "question_title": {
             "type": "string",
             "example": "Googleマップなど、他社のツールを使用しますか？"
           },
           "options": {
+            "$ref": "#/components/schemas/options"
+          }
+        }
+      },
+      "QuestionData": {
+        "type": "object",
+        "properties": {
+          "questions" : {
             "type": "array",
             "items": {
               "properties": {
-                "option_id": {
+                "question_id": {
                   "type": "integer",
-                  "description": "Option_id",
+                  "description": "question_id",
+                  "format": "id",
+                  "example": 2
+                },
+                "position": {
+                  "type": "object",
+                  "properties": {
+                    "x": {
+                      "type": "integer",
+                      "description": "管理画面でのその質問カードのx座標の位置",
+                      "example": 655
+                    },
+                    "y": {
+                      "type": "integer",
+                      "description": "管理画面でのその質問カードのy座標の位置",
+                      "example": 135
+                    }
+                  }
+                },
+                "type" :{
+                  "type": "string",
+                  "description": "その質問のノードのタイプ",
+                  "example": "selectorDefaultNode"
+                },
+                "previous_option_id": {
+                  "type": "string",
+                  "description": "親の質問があればidを指定",
+                  "format": "id",
                   "example": 3
                 },
-                "answer": {
+                "question_title": {
                   "type": "string",
-                  "description": "回答タイトル",
-                  "example": "はい"
+                  "example": "Googleマップなど、他社のツールを使用しますか？"
                 },
-                "description": {
-                  "type": "string",
-                  "description": "回答の説明",
-                  "example": "回答の説明,回答の説明"
+                "options": {
+                  "$ref": "#/components/schemas/options"
+                }
+              }
+            }
+          },
+          "relations": {
+            "type": "array",
+            "items": {
+              "properties": {
+                "source_id":{
+                  "type": "integer",
+                  "description": "Question_id",
+                  "example": 1
                 },
-                "price": {
-                  "type": "number",
-                  "description": "価格",
-                  "example": "10000"
-                },
-                "image_path": {
-                  "type": "string",
-                  "description": "画像のパス",
-                  "example": "https:/xxxxx.xx/xxx.jpg"
+                "target_id":{
+                  "type": "integer",
+                  "description": "source_idでした質問の次にくる質問のQuestion_id",
+                  "example": 2
                 }
               }
             }
@@ -832,6 +817,38 @@
                   }
                 }
               }
+            }
+          }
+        }
+      },
+      "options": {
+        "type": "array",
+        "items": {
+          "properties": {
+            "option_id": {
+              "type": "integer",
+              "description": "Option_id",
+              "example": 1
+            },
+            "answer": {
+              "type": "string",
+              "description": "回答タイトル",
+              "example": "はい"
+            },
+            "description": {
+              "type": "string",
+              "description": "回答の説明",
+              "example": "回答の説明,回答の説明"
+            },
+            "price": {
+              "type": "number",
+              "description": "価格",
+              "example": "10000"
+            },
+            "image_path": {
+              "type": "string",
+              "description": "画像のパス",
+              "example": "https:/xxxxx.xx/xxx.jpg"
             }
           }
         }
