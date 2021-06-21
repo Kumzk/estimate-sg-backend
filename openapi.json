@@ -271,39 +271,32 @@
       }
     },
     "/question": {
-      "post": {
+      "put": {
         "tags": [
           "question"
         ],
-        "summary": "シュミレーションで一番最初の質問",
-        "description": "そのシュミレーションで一番最初の質問を保存する際にpostする",
-        "operationId": "PostQuestion",
+        "summary": "質問を作成、更新",
+        "description": "既存のシュミレーションの質問を作成、編集する",
+        "operationId": "PostQuestionId",
         "requestBody": {
-          "$ref": "#/components/requestBodies/Question"
+          "$ref": "#/components/requestBodies/QuestionEdit"
         },
         "responses": {
           "200": {
-            "$ref": "#/components/responses/PostQuestionSuccessResponse"
+            "$ref": "#/components/responses/PutQuestionSuccessResponse"
           },
           "400": {
             "$ref": "#/components/responses/400ErrorResponse"
           }
         }
-      }
-    },
-    "/question/{simulation_id}": {
-      "put": {
+      },
+      "delete": {
         "tags": [
           "question"
         ],
         "summary": "質問を更新、削除する",
-        "description": "既存のシュミレーションの質問を編集、削除する際にputする",
+        "description": "シュミレーションの質問を削除する",
         "operationId": "PostQuestionId",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/Simulation_id"
-          }
-        ],
         "requestBody": {
           "$ref": "#/components/requestBodies/QuestionEdit"
         },
@@ -696,6 +689,12 @@
       "QuestionData": {
         "type": "object",
         "properties": {
+          "simulation_id" :{
+            "type" : "integer",
+            "description": "simulation_id",
+            "format": "id",
+            "example": 3
+          },
           "questions" : {
             "type": "array",
             "items": {
