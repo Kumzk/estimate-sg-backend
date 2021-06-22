@@ -11,9 +11,9 @@ class CreateSimulationsTable extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('simulations', function (Blueprint $table) {
+        Schema::create('simulations', function (Blueprint $table): void {
             $table->id();
             #$table->string('embedded_code')->default("<iframe width='100%'height='100%' src='〜〜' frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture'allowfullscreen></iframe>");
             $table->string('inquiries');
@@ -28,7 +28,7 @@ class CreateSimulationsTable extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('simulations');
     }

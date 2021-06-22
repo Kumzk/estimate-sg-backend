@@ -11,12 +11,17 @@ class CreateQuestionsTable extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('questions', function (Blueprint $table) {
+        Schema::create('questions', function (Blueprint $table): void{
             $table->id();
             $table->foreignId('simulation_id')->constrained();
             $table->string('title');
+            $table->integer('position_x');
+            $table->integer('position_y');
+            $table->integer('node_type');
+            $table->integer('previous_question_id')->default(0);
+            $table->integer('previous_option_id')->default(0);
             $table->timestamps();
         });
     }
@@ -26,7 +31,7 @@ class CreateQuestionsTable extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('questions');
     }

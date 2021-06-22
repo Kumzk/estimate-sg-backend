@@ -31,68 +31,78 @@ class SimulationSeeder extends Seeder
 
         for ($i = 1; $i < 5; ++$i) {
             $user->simulations()->create([
-               # 'embedded_code' => "<iframe width='100%'height='100%' src='〜〜' frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture'allowfullscreen></iframe>",
                 'simulator_title' => 'web制作見積もりシュミレーション'.$i,
                 'inquiries' => 'test'.$i.'@gmail.com',
             ]);
         }
 
         $questions = [
-            'ECサイトかHPどちらを作りますか？', //0
-            '制作方法はどちらにしますか',      //1
-            'デザイン制作は依頼しますか？',    //2
-            'デザイン制作は依頼しますか？',    //3
-            '何ページのHPを作成しますか？',   //4
+            ["title" => "Googleマップなど、他社のツールを使用しますか？", "position_x" => 655, "position_y" => 136, "node_type" => 1],
+            ["title" => "Googleマップなど、他社のツールを使用しますか？", "position_x" => 374, "position_y" => 327, "node_type" => 2],
+            ["title" => "Googleマップなど、他社のツールを使用しますか？", "position_x" => 307, "position_y" => 535, "node_type" => 2],
+            ["title" => "Googleマップなど、他社のツールを使用しますか？", "position_x" => 374, "position_y" => 327, "node_type" => 2],
+            ["title" => "Googleマップなど、他社のツールを使用しますか？", "position_x" => 456, "position_y" => 698, "node_type" => 2],
+            ["title" => "Googleマップなど、他社のツールを使用しますか？", "position_x" => 828, "position_y" => 274, "node_type" => 2],
+            ["title" => "Googleマップなど、他社のツールを使用しますか？", "position_x" => 875, "position_y" => 666, "node_type" => 2],
+            ["title" => "Googleマップなど、他社のツールを使用しますか？", "position_x" => 930, "position_y" => 633, "node_type" => 2],
         ];
 
-        $items = [];
+        $options = [
+            ["answer" => "はい", "description" => "回答の説明,回答の説明", "price" => 200000, "image_path" => "https://dummyimage.com/600x400/000/0011ff"],
+            ["answer" => "いいえ", "description" => "回答の説明,回答の説明", "price" => 1000, "image_path" => "https://dummyimage.com/600x400/000/49f596"],
+            ["answer" => "いいえ", "description" => "回答の説明,回答の説明", "price" => 0, "image_path" => "https://dummyimage.com/600x400/000/f59649"],
+        ];
 
         $simulations = $user->simulations()->get();
 
-        $now = Carbon::now();
-
         foreach ($simulations as $simulation) {
             foreach ($questions as $question) {
-                $items[] = [
-                    'title' => $question,
-                    'simulation_id' => $simulation->id,
-                    'created_at' => $now,
-                    'updated_at' => $now,
-                ];
+                $question = $simulation->questions()->create($question);
+                foreach ($options as $option) {
+                    $question->options()->create($option);
+                }
             }
         }
-
-        DB::table('questions')->insert($items);
 
         foreach ($simulations as $simulation) {
             $questions = $simulation->questions()->get();
 
-            $options = [
-                //ECサイトかHPどちらを作りますか
-                ['question_id' => $questions[0]->id, 'next_question_id' => $questions[1]->id, 'answer' => 'ECサイト構築', 'description' => 'ECサイトを構築する', 'price' => 400000, 'image_path' => 'https://eterein.co.jp/estimate/static/images/ec/ec.png', 'created_at' => $now, 'updated_at' => $now],
-                ['question_id' => $questions[0]->id, 'next_question_id' => $questions[3]->id, 'answer' => 'HP制作', 'description' => 'HPやLPを制作する', 'price' => 100000, 'image_path' => 'https://eterein.co.jp/estimate/static/images/ec/ec.png', 'created_at' => $now, 'updated_at' => $now],
+            $first_question = $questions[0];
+            $first_question_options = $first_question->options()->get();
 
-                //制作方法はどちらにしますか
-                ['question_id' => $questions[1]->id, 'next_question_id' => $questions[2]->id, 'answer' => 'ECCUBEを使用する', 'description' => 'EC構築パッケージを使用する', 'price' => 100000, 'image_path' => 'https://eterein.co.jp/estimate/static/images/ec/ec.png', 'created_at' => $now, 'updated_at' => $now],
-                ['question_id' => $questions[1]->id, 'next_question_id' => $questions[2]->id, 'answer' => 'フルスクラッチで制作する', 'description' => '1からシステム構築をする', 'price' => 1000000, 'image_path' => 'https://eterein.co.jp/estimate/static/images/ec/ec.png', 'created_at' => $now, 'updated_at' => $now],
+            $second_question = $questions[1];
+            $second_question_options = $second_question->options()->get();
+            $second_question->previous_question_id = $first_question->id;
+            $second_question->save();
 
-                //デザイン制作は依頼しますか？
-                ['question_id' => $questions[2]->id, 'next_question_id' => 0, 'answer' => 'コンセプトから依頼したい', 'description' => '企画から参加して欲しい', 'price' => 100000, 'image_path' => 'https://eterein.co.jp/estimate/static/images/ec/ec.png', 'created_at' => $now, 'updated_at' => $now],
-                ['question_id' => $questions[2]->id, 'next_question_id' => 0, 'answer' => 'デザインは自分たちで行う', 'description' => 'デザイナーは自分で探してくる', 'price' => 50000, 'image_path' => 'https://eterein.co.jp/estimate/static/images/ec/ec.png', 'created_at' => $now, 'updated_at' => $now],
-                ['question_id' => $questions[2]->id, 'next_question_id' => 0, 'answer' => 'わからない', 'description' => 'わからない', 'price' => 0, 'image_path' => 'https://eterein.co.jp/estimate/static/images/ec/ec.png', 'created_at' => $now, 'updated_at' => $now],
+            $third_question = $questions[2];
+            $third_question->previous_question_id = $second_question->id;
+            $third_question->previous_option_id = $second_question_options[0]->id;
+            $third_question->save();
 
-                //デザイン制作は依頼しますか？
-                ['question_id' => $questions[3]->id, 'next_question_id' => $questions[4]->id, 'answer' => 'コンセプトから依頼したい', 'description' => '企画から参加して欲しい', 'price' => 100000, 'image_path' => 'https://eterein.co.jp/estimate/static/images/ec/ec.png', 'created_at' => $now, 'updated_at' => $now],
-                ['question_id' => $questions[3]->id, 'next_question_id' => $questions[4]->id, 'answer' => 'デザインは自分たちで行う', 'description' => 'デザイナーは自分で探してくる', 'price' => 50000, 'image_path' => 'https://eterein.co.jp/estimate/static/images/ec/ec.png', 'created_at' => $now, 'updated_at' => $now],
-                ['question_id' => $questions[3]->id, 'next_question_id' => $questions[4]->id, 'answer' => 'わからない', 'description' => 'わからない', 'price' => 0, 'image_path' => 'https://eterein.co.jp/estimate/static/images/ec/ec.png', 'created_at' => $now, 'updated_at' => $now],
+            $third_question = $questions[3];
+            $third_question->previous_question_id = $second_question->id;
+            $third_question->save();
 
-                //何ページのHPを作成しますか？
-                ['question_id' => $questions[4]->id, 'next_question_id' => 0, 'answer' => '1 ~ 5', 'description' => '1 ~ 5 ページのサイト', 'price' => 100000, 'image_path' => 'https://eterein.co.jp/estimate/static/images/ec/ec.png', 'created_at' => $now, 'updated_at' => $now],
-                ['question_id' => $questions[4]->id, 'next_question_id' => 0, 'answer' => '6 ~ 10', 'description' => '6 ~ 10ページにサイト', 'price' => 500000, 'image_path' => 'https://eterein.co.jp/estimate/static/images/ec/ec.png', 'created_at' => $now, 'updated_at' => $now],
-                ['question_id' => $questions[4]->id, 'next_question_id' => 0, 'answer' => 'わからない', 'description' => 'わからない', 'price' => 0, 'image_path' => 'https://eterein.co.jp/estimate/static/images/ec/ec.png', 'created_at' => $now, 'updated_at' => $now],
-            ];
+            $third_question = $questions[4];
+            $third_question->previous_question_id = $second_question->id;
+            $third_question->previous_option_id = $second_question_options[2]->id;
+            $third_question->save();
 
-            DB::table('options')->insert($options);
+            $sixth_question = $questions[5];
+            $sixth_question_options = $sixth_question->options()->get();
+            $sixth_question->previous_question_id = $first_question->id;
+            $sixth_question->previous_option_id = $first_question_options[2]->id;
+            $sixth_question->save();
+
+            $seventh_question = $questions[6];
+            $seventh_question->previous_question_id = $sixth_question->id;
+            $seventh_question->previous_option_id = $sixth_question_options[2]->id;
+            $seventh_question->save();
+
+            $eighth_question = $questions[6];
+            $eighth_question->previous_question_id = $sixth_question->id;
+            $eighth_question->save();
         }
     }
 }

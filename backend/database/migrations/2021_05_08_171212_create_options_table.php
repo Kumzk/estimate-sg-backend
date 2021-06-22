@@ -11,16 +11,15 @@ class CreateOptionsTable extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('options', function (Blueprint $table) {
+        Schema::create('options', function (Blueprint $table): void {
             $table->id();
+            $table->foreignId('question_id')->constrained();
             $table->string('answer');
             $table->string('description');
             $table->string('image_path');
-            $table->integer('next_question_id');
             $table->integer('price');
-            $table->foreignId('question_id')->constrained();
             $table->timestamps();
         });
     }
@@ -30,7 +29,7 @@ class CreateOptionsTable extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('options');
     }
