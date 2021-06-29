@@ -12,9 +12,6 @@ class User extends Authenticatable
     use HasFactory;
     use Notifiable;
 
-    /**
-     * The preferences that we don't want to show to the client.
-     */
     protected $guarded = ['id'];
     protected $hidden = ['created_at', 'updated_at'];
 

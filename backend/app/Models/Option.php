@@ -10,19 +10,8 @@ class Option extends Model
 {
     use HasFactory;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'answer',
-        'description',
-        'image_path',
-        'next_question_id',
-        'price',
-        'option_id',
-    ];
+    protected $guarded = ['id'];
+    protected $hidden = ['created_at', 'updated_at'];
 
     public function question(): BelongsTo
     {

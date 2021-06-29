@@ -10,16 +10,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Question extends Model
 {
     use HasFactory;
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'simulation_id',
-        'title',
-    ];
+    
+    protected $guarded = ['id'];
+    protected $hidden = ['created_at', 'updated_at'];
 
     public function simulation(): BelongsTo
     {
