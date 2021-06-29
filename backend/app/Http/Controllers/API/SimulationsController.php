@@ -22,11 +22,8 @@ class SimulationsController extends Controller
      *  @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        return response()->json([
-                'data' => $this->simulation_repository->getUserSimulations($this->user),
-                'success' => true
-            ], 200);
+    {    
+        return $this->successResponse($this->simulation_repository->getUserSimulations($this->user));
     }
 
     /**
@@ -38,6 +35,6 @@ class SimulationsController extends Controller
     public function store(CreateSimulationRequest $request)
     {   
         $this->simulation_repository->createSimulation($request->only(['simulator_title', 'inquiries']));
-        return response()->json(['success' => true], 200);
+        return $this->successResponse();
     }
 }
