@@ -37,14 +37,14 @@ class SimulationSeeder extends Seeder
         }
 
         $questions = [
-            ["title" => "Googleマップなど、他社のツールを使用しますか？", "position_x" => 655, "position_y" => 136, "node_type" => 1],
-            ["title" => "Googleマップなど、他社のツールを使用しますか？", "position_x" => 374, "position_y" => 327, "node_type" => 2],
-            ["title" => "Googleマップなど、他社のツールを使用しますか？", "position_x" => 307, "position_y" => 535, "node_type" => 2],
-            ["title" => "Googleマップなど、他社のツールを使用しますか？", "position_x" => 374, "position_y" => 327, "node_type" => 2],
-            ["title" => "Googleマップなど、他社のツールを使用しますか？", "position_x" => 456, "position_y" => 698, "node_type" => 2],
-            ["title" => "Googleマップなど、他社のツールを使用しますか？", "position_x" => 828, "position_y" => 274, "node_type" => 2],
-            ["title" => "Googleマップなど、他社のツールを使用しますか？", "position_x" => 875, "position_y" => 666, "node_type" => 2],
-            ["title" => "Googleマップなど、他社のツールを使用しますか？", "position_x" => 930, "position_y" => 633, "node_type" => 2],
+            ["title" => "Googleマップなど、他社のツールを使用しますか？１", "position_x" => 655, "position_y" => 136, "node_type" => 1],
+            ["title" => "Googleマップなど、他社のツールを使用しますか？２", "position_x" => 374, "position_y" => 327, "node_type" => 2],
+            ["title" => "Googleマップなど、他社のツールを使用しますか？３", "position_x" => 307, "position_y" => 535, "node_type" => 3],
+            ["title" => "Googleマップなど、他社のツールを使用しますか？４", "position_x" => 374, "position_y" => 327, "node_type" => 3],
+            ["title" => "Googleマップなど、他社のツールを使用しますか？５", "position_x" => 456, "position_y" => 698, "node_type" => 3],
+            ["title" => "Googleマップなど、他社のツールを使用しますか？６", "position_x" => 828, "position_y" => 274, "node_type" => 2],
+            ["title" => "Googleマップなど、他社のツールを使用しますか？７", "position_x" => 875, "position_y" => 666, "node_type" => 3],
+            ["title" => "Googleマップなど、他社のツールを使用しますか？８", "position_x" => 930, "position_y" => 633, "node_type" => 3],
         ];
 
         $options = [
@@ -100,7 +100,7 @@ class SimulationSeeder extends Seeder
             $seventh_question->previous_option_id = $sixth_question_options[2]->id;
             $seventh_question->save();
 
-            $eighth_question = $questions[6];
+            $eighth_question = $questions[7];
             $eighth_question->previous_question_id = $sixth_question->id;
             $eighth_question->save();
         }
