@@ -129,3 +129,5 @@ ide-helper:
 	docker-compose exec app php artisan ide-helper:generate
 	docker-compose exec app php artisan ide-helper:meta
 	docker-compose exec app php artisan ide-helper:models --nowrite
+auth:
+	docker-compose exec app php artisan myapp:cognito test1@example.com Password-1 auth

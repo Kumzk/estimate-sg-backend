@@ -14,7 +14,7 @@ class Controller extends BaseController
 
 
     /**
-     *シュミレーションの作成
+     *成功時にレスポンス
      * 
      * @param  array  $data
      * @return \Illuminate\Http\Response
@@ -25,5 +25,15 @@ class Controller extends BaseController
             return response()->json(['data' => $data,'success' => true], 200);
         }
         return response()->json(['success' => true], 200);
+    }
+
+    /**
+     *失敗時のレスポンス
+     * 
+     * @return \Illuminate\Http\Response
+     */
+    public function errorResponse()
+    {   
+        return response()->json(['message' => "Invalid request",'success' => false], 400);
     }
 }

@@ -3,27 +3,35 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\SimulationRepositoryInterface;
+use App\Services\SimulationService;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\API\CreateSimulationRequest;
 
 class SimulationsController extends Controller
 {
-    protected $user;
+     /**
+     * @var JSimulationServise
+     */
+    private $simulation_service;
 
-    public function __construct(SimulationRepositoryInterface $simulation_repository)
+    public function __construct(SimulationService $simulation_service)
     {
-        $this->user = Auth::user();
-        $this->simulation_repository = $simulation_repository;
+        $this->simulation_service = $simulation_service;
     }
     /**
-     *シュミレーションの作成
+     *シュミレーション一覧取得
      * 
      *  @return \Illuminate\Http\Response
      */
     public function index()
-    {    
-        return $this->successResponse($this->simulation_repository->getUserSimulations($this->user));
+    {   
+        $response = $this->simulation_service->getUserSimulations();
+
+        if ($response["status"] === config("const.response.success")) {
+            return $this->successResponse($response["data"]);
+        } else {
+            return $this->errorResponse();
+        }
     }
 
     /**
@@ -34,7 +42,28 @@ class SimulationsController extends Controller
      */
     public function store(CreateSimulationRequest $request)
     {   
-        $this->simulation_repository->createSimulation($request->only(['simulator_title', 'inquiries']));
-        return $this->successResponse();
+        $response = $this->simulation_service->createSimulation($request->only(['simulator_title', 'inquiries']));
+
+        if ($response) {
+            return $this->successResponse();
+        } else {
+            return $this->errorResponse();
+        }
+    }
+
+    /**
+     *シュミレーション詳細取得
+     * 
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show(int $id)
+    {   
+        $response = $this->simulation_service->getSimulationDetail($id);
+        if ($response["status"] === config("const.response.success")) {
+            return $this->successResponse($response["data"]);
+        } else {
+            return $this->errorResponse();
+        }
     }
 }
