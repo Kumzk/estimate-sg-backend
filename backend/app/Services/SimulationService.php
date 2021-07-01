@@ -83,8 +83,14 @@ class SimulationService
             $options = Option::whereIn("question_id", $question_ids)->get();
 
             foreach($questions as $question){
-                $question["options"][] = $options->where("question_id", $question->id)->all();
-                $data["data"]["questions"][] = $question;
+                $question_data = $question->toArray();
+                $question_data["position"]["x"] = $question->position_x;
+                $question_data["position"]["y"] = $question->position_y;
+                $question_options = $options->where("question_id", $question->id)->toArray();
+                foreach ($question_options as $option){
+                    $question_data["options"][] = $option;
+                }
+                $data["data"]["questions"][] = $question_data;
                 if (!($question->node_type == config("const.node_type.selectorInputNode")))
                 $data["data"]["relations"][] = [
                     "source_id" => $question->previous_question_id,

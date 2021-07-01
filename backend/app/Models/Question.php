@@ -12,7 +12,7 @@ class Question extends Model
     use HasFactory;
     
     protected $guarded = ['id'];
-    protected $hidden = ['created_at', 'updated_at'];
+    protected $hidden = ['simulation_id', 'previous_option_id', 'position_x', 'position_y','created_at', 'updated_at'];
 
     public function simulation(): BelongsTo
     {

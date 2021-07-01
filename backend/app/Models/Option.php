@@ -11,7 +11,7 @@ class Option extends Model
     use HasFactory;
 
     protected $guarded = ['id'];
-    protected $hidden = ['created_at', 'updated_at'];
+    protected $hidden = ['question_id', 'created_at', 'updated_at'];
 
     public function question(): BelongsTo
     {
