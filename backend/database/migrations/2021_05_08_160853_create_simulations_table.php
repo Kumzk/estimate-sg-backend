@@ -20,6 +20,7 @@ class CreateSimulationsTable extends Migration
             $table->string('simulator_title');
             $table->foreignId('user_id')->constrained();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

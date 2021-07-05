@@ -21,6 +21,7 @@ class CreateOptionsTable extends Migration
             $table->string('image_path');
             $table->integer('price');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

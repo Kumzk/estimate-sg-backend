@@ -23,6 +23,7 @@ class CreateQuestionsTable extends Migration
             $table->integer('previous_question_id')->default(0);
             $table->integer('previous_option_id')->default(0);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

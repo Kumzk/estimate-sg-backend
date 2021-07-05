@@ -22,5 +22,6 @@ Route::group(['namespace' => 'API'], static function (): void {
         Route::get('simulation', [SimulationsController::class, 'index']);
         Route::post('simulation', [SimulationsController::class, 'store']);
         Route::get('simulation/{id}', [SimulationsController::class, 'show']);
+        Route::delete('simulation/{id}', [SimulationsController::class, 'delete']);
     });
 });

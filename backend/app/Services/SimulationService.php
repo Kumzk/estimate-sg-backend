@@ -63,6 +63,8 @@ class SimulationService
         $data = [];
         $data["status"] = config("const.response.error"); 
         $data["data"] = [];
+        $data["data"]["questions"] = [];
+        $data["data"]["relations"] = [];
 
         $simulation = null;
         $questions = [];
@@ -83,6 +85,12 @@ class SimulationService
             $options = Option::whereIn("question_id", $question_ids)->get();
 
             foreach($questions as $question){
+                $question_data = [];
+                $question_data["position"]["x"] = 0;
+                $question_data["position"]["y"] = 0;
+                $question_data["options"] = [];
+                $question_options = [];
+
                 $question_data = $question->toArray();
                 $question_data["position"]["x"] = $question->position_x;
                 $question_data["position"]["y"] = $question->position_y;
@@ -91,17 +99,42 @@ class SimulationService
                     $question_data["options"][] = $option;
                 }
                 $data["data"]["questions"][] = $question_data;
-                if (!($question->node_type == config("const.node_type.selectorInputNode")))
-                $data["data"]["relations"][] = [
-                    "source_id" => $question->previous_question_id,
-                    "target_id" => $question->id
-                ];
+                if (!($question->node_type == config("const.node_type.selectorInputNode"))){
+                    $data["data"]["relations"][] = [
+                        "source_id" => $question->previous_question_id,
+                        "target_id" => $question->id
+                    ];
+                }
             }
 
             $data["status"] = config("const.response.success");
             return $data;
         } catch (\Exception $e)  {
             return $data;
+        }
+    }
+
+    /**
+     *シュミレーションの削除
+     * 
+     * @param int $id
+     * @return bool
+     */
+    public function deleteSimulation(int $id): bool
+    {
+        try{
+            $simulation = $this->currentUser->simulations()->where("id", $id)->first();
+
+            \Log::debug($simulation);
+            
+            if ($simulation == null) {
+                throw new \Exception();
+            }
+
+            $simulation->delete();
+            return true;
+        } catch (\Exception $e) {
+            return false;
         }
     }
 }
