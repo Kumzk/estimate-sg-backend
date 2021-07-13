@@ -138,7 +138,7 @@
         "tags": [
           "simulator"
         ],
-        "summary": "編集する対象のシュミレーションのデータを取得",
+        "summary": "編集する対象のシュミレーションのデータを取得 -> done",
         "description": "編集する対象のシュミレーションのデータを取得",
         "operationId": "getSimulationData",
         "parameters": [
@@ -175,7 +175,7 @@
         "tags": [
           "simulator"
         ],
-        "summary": "シミュレータの削除",
+        "summary": "シミュレータの削除  -> done",
         "description": "シミュレータの削除",
         "operationId": "deleteSimulator",
         "parameters": [
@@ -223,46 +223,6 @@
         "responses": {
           "200": {
             "$ref": "#/components/responses/SuccessResponse"
-          },
-          "400": {
-            "$ref": "#/components/responses/400ErrorResponse"
-          }
-        }
-      }
-    },
-    "/simulator/{id}": {
-      "get": {
-        "tags": [
-          "simulator"
-        ],
-        "summary": "シュミレーターを取得",
-        "description": "シュミレーターを取得",
-        "operationId": "getFrontendSimulation",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/Simulation_id"
-          }
-        ],
-        "security": [],
-        "responses": {
-          "200": {
-            "description": "データ取得成功",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/SimulatorData"
-                    },
-                    "success": {
-                      "type": "boolean",
-                      "description": "成功ならtrueを、失敗ならfalseを返す"
-                    }
-                  }
-                }
-              }
-            }
           },
           "400": {
             "$ref": "#/components/responses/400ErrorResponse"

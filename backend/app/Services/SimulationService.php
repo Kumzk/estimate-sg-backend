@@ -19,9 +19,9 @@ class SimulationService
     /**
      * ユーザーのシュミレーションを全取得.
      * 
-     * @return Array
+     * @return array
      */
-    public function getUserSimulations(): Array
+    public function getUserSimulations(): array
     {   
         $data = [];
         $data["status"] = config("const.response.error");
@@ -40,15 +40,23 @@ class SimulationService
      *シュミレーションの作成
      * 
      * @param array $params
-     * @return bool
+     * @return array
      */
-    public function createSimulation(array $params): bool
-    {
-        try{
-            $this->currentUser->simulations()->create($params);
-            return true;
+    public function createSimulation(array $params): array
+    {   
+        $data = [];
+        $data["status"] = config("const.response.error"); 
+        $data["data"] = [];
+
+        try{           
+            $data['data'] = $this->currentUser->simulations()->create([
+                'simulator_title' => $params['simulator_title'],
+                'inquiries' => $params['inquiries']
+                ]);
+            $data["status"] = config("const.response.success");
+            return $data;
         } catch (\Exception $e) {
-            return false;
+            return $data;
         }
     }
 
@@ -118,23 +126,63 @@ class SimulationService
      *シュミレーションの削除
      * 
      * @param int $id
-     * @return bool
+     * @return array
      */
-    public function deleteSimulation(int $id): bool
+    public function deleteSimulation(int $id): array
     {
+        $data = [];
+        $data["status"] = config("const.response.error"); 
+        $data["data"] = [];
         try{
             $simulation = $this->currentUser->simulations()->where("id", $id)->first();
-
-            \Log::debug($simulation);
             
             if ($simulation == null) {
                 throw new \Exception();
             }
 
             $simulation->delete();
-            return true;
+
+            $data["status"] = config("const.response.success");
+            return $data;
         } catch (\Exception $e) {
-            return false;
+            return $data;
+        }
+    }
+
+    /**
+     *シュミレーションの複製
+     * 
+     * @param array $params
+     * @return array
+     */
+    public function duplicateSimulation(array $params): array
+    {
+        $data = [];
+        $data["status"] = config("const.response.error"); 
+        $data["data"] = [];
+        try{
+            $simulation_id = $params['id'];
+            $simulator_title = $params['simulator_title'];
+            $inquiries = $params['inquiries'];
+
+            $simulation_original = $this->currentUser->simulations()->where("id", $simulation_id)->first();
+
+            
+            if ($simulation_original == null) {
+                throw new \Exception();
+            }
+            
+            $simulation = $this->currentUser->simulations()->create([
+                'simulator_title' => $simulator_title,
+                'inquiries' => $inquiries
+            ]); 
+            
+            // $simulation_questions = $simulation_original
+
+            $data["status"] = config("const.response.success");
+            return $data;
+        } catch (\Exception $e) {
+            return $data;
         }
     }
 }

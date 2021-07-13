@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Services\SimulationService;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\API\CreateSimulationRequest;
+use App\Http\Requests\API\DuplicateSimulationRequest;
 use Symfony\Component\HttpFoundation\Response;
 
 class SimulationsController extends Controller
@@ -28,11 +29,7 @@ class SimulationsController extends Controller
     {   
         $response = $this->simulation_service->getUserSimulations();
 
-        if ($response["status"] === config("const.response.success")) {
-            return $this->successResponse($response["data"]);
-        } else {
-            return $this->errorResponse();
-        }
+        return $this->createResponse($response["status"], $response["data"]);
     }
 
     /**
@@ -45,11 +42,7 @@ class SimulationsController extends Controller
     {   
         $response = $this->simulation_service->createSimulation($request->only(['simulator_title', 'inquiries']));
 
-        if ($response) {
-            return $this->successResponse();
-        } else {
-            return $this->errorResponse();
-        }
+        return $this->createResponse($response["status"]);
     }
 
     /**
@@ -61,11 +54,8 @@ class SimulationsController extends Controller
     public function show(int $id): Response
     {   
         $response = $this->simulation_service->getSimulationDetail($id);
-        if ($response["status"] === config("const.response.success")) {
-            return $this->successResponse($response["data"]);
-        } else {
-            return $this->errorResponse();
-        }
+
+        return $this->createResponse($response["status"], $response["data"]);
     }
 
     /**
@@ -77,10 +67,20 @@ class SimulationsController extends Controller
     public function delete(int $id): Response
     {   
         $response = $this->simulation_service->deleteSimulation($id);
-        if ($response) {
-            return $this->successResponse();
-        } else {
-            return $this->errorResponse();
-        }
+
+        return $this->createResponse($response["status"]);
+    }
+
+    /**
+     *シュミレーションの複製
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function duplicate(DuplicateSimulationRequest $request): Response
+    {
+        $response = $this->simulation_service->duplicateSimulation($request->only(['id', 'simulator_title', 'inquiries']));
+        
+        return $this->createResponse($response["status"]);
     }
 }

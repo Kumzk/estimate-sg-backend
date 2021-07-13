@@ -11,8 +11,20 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-
-
+    /**
+     *レスポンス作成
+     * 
+     * @param  array  $data
+     * @return \Illuminate\Http\Response
+     */
+    public function createResponse(int $status, array $data = null)
+    {      
+        if ($status === config("const.response.success")) {
+            return $this->successResponse($data);
+        } else {
+            return $this->errorResponse();
+        }
+    }
     /**
      *成功時にレスポンス
      * 
