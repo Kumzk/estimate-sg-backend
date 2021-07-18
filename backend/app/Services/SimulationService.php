@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Models\Option;
+use App\Models\Question;
+use App\Models\Simulation;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -167,17 +169,38 @@ class SimulationService
 
             $simulation_original = $this->currentUser->simulations()->where("id", $simulation_id)->first();
 
-            
             if ($simulation_original == null) {
                 throw new \Exception();
             }
-            
+
             $simulation = $this->currentUser->simulations()->create([
                 'simulator_title' => $simulator_title,
                 'inquiries' => $inquiries
             ]); 
             
-            // $simulation_questions = $simulation_original
+            $simulation_questions = $simulation_original->questions()->get();
+            
+            $new_simulation_ids = [];
+            $new_option_ids = [];
+            $new_option_ids[0] = 0;
+            while(!(count($new_simulation_ids) == count($simulation_questions))){
+                foreach($simulation_questions as $question) {
+                    if (!array_key_exists($question->id, $new_simulation_ids)) {
+                        if ($question->previous_question_id == 0) {
+                            $new_question_date = $this->duplicateQustion($simulation, $question, $new_option_ids);
+
+                            $new_simulation_ids[$question->id] = $new_question_date['new_question_id'];
+                            $new_option_ids = $new_question_date['new_option_ids'];
+                        } else if(array_key_exists($question->previous_question_id, $new_simulation_ids)){
+                            $previous_question_id = $new_simulation_ids[$question->previous_question_id];
+                            $new_question_date = $this->duplicateQustion($simulation, $question, $new_option_ids, $previous_question_id);
+
+                            $new_simulation_ids[$question->id] = $new_question_date['new_question_id'];
+                            $new_option_ids = $new_question_date['new_option_ids'];
+                        }
+                    }
+                }
+            }
 
             $data["status"] = config("const.response.success");
             return $data;
@@ -185,4 +208,35 @@ class SimulationService
             return $data;
         }
     }
-}
+
+
+    /**
+     * 質問の複製
+     * 
+     * @param Simulation $simulation
+     * @param Question $question
+     * @param array $new_option_ids
+     * @param int $previous_question_id
+     * @return array
+     */
+    private function duplicateQustion(Simulation $simulation, Question $question, array $new_option_ids,int $previous_question_id = 0): array
+    {   
+        $data = [];
+        $new_question = $question->replicate();
+        $new_question->previous_option_id = $new_option_ids[$question->previous_option_id];
+        $new_question->previous_question_id = $previous_question_id;
+        $new_question = $new_question->makeVisible(['position_x', 'position_y', 'previous_option_id'])->toArray();
+        $new_question = $simulation->questions()->create($new_question);
+
+        $options = $question->options()->get();
+        foreach($options as $option){
+            $new_option = $option->replicate();
+            $new_option = $new_question->options()->create($new_option->toArray());
+            $new_option_ids[$option->id] = $new_option->id;
+        }
+
+        $data['new_question_id'] = $new_question->id;
+        $data['new_option_ids'] = $new_option_ids;
+        return $data;
+    }
+}   
