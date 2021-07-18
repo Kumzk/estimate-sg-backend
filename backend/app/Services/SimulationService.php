@@ -186,13 +186,14 @@ class SimulationService
             while(!(count($new_simulation_ids) == count($simulation_questions))){
                 foreach($simulation_questions as $question) {
                     if (!array_key_exists($question->id, $new_simulation_ids)) {
-                        if ($question->previous_question_id == 0) {
-                            $new_question_date = $this->duplicateQustion($simulation, $question, $new_option_ids);
+                        if ($question->previous_question_id == 0 ||
+                            array_key_exists($question->previous_question_id, $new_simulation_ids)) {
+                            
+                            $previous_question_id = 0;
+                            if (isset($new_simulation_ids[$question->previous_question_id])) {
+                                $previous_question_id = $new_simulation_ids[$question->previous_question_id];
+                            }
 
-                            $new_simulation_ids[$question->id] = $new_question_date['new_question_id'];
-                            $new_option_ids = $new_question_date['new_option_ids'];
-                        } else if(array_key_exists($question->previous_question_id, $new_simulation_ids)){
-                            $previous_question_id = $new_simulation_ids[$question->previous_question_id];
                             $new_question_date = $this->duplicateQustion($simulation, $question, $new_option_ids, $previous_question_id);
 
                             $new_simulation_ids[$question->id] = $new_question_date['new_question_id'];
