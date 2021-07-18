@@ -72,6 +72,20 @@ class SimulationsController extends Controller
     }
 
     /**
+     *シュミレーションの編集
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(CreateSimulationRequest $request, int $id): Response
+    {   
+        $response = $this->simulation_service->updateSimulation($request->only(['simulator_title', 'inquiries']),$id);
+
+        return $this->createResponse($response["status"]);
+    }
+
+    /**
      *シュミレーションの複製
      * 
      * @param  \Illuminate\Http\Request  $request

@@ -117,7 +117,7 @@
         "tags": [
           "simulator"
         ],
-        "summary": "シュミレーションを複製",
+        "summary": "シュミレーションを複製   -> done",
         "description": "シュミレーションを複製",
         "operationId": "postSimulationDuplicate",
         "requestBody": {
@@ -209,7 +209,7 @@
         "tags": [
           "simulator"
         ],
-        "summary": "シュミレーター編集",
+        "summary": "シュミレーター編集   -> done",
         "description": "シュミレーターのデータを更新する",
         "operationId": "PutSimulator",
         "parameters": [

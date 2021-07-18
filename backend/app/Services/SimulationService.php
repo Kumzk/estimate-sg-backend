@@ -152,6 +152,34 @@ class SimulationService
     }
 
     /**
+     *シュミレーションの編集
+     * 
+     * @param array $params
+     * @param int $id
+     * @return array
+     */
+    public function updateSimulation(array $params, int $id): array
+    {
+        $data = [];
+        $data["status"] = config("const.response.error"); 
+        $data["data"] = [];
+        try{
+            $simulation = $this->currentUser->simulations()->where("id", $id)->first();
+            
+            if ($simulation == null) {
+                throw new \Exception();
+            }
+
+            $simulation->update($params);
+
+            $data["status"] = config("const.response.success");
+            return $data;
+        } catch (\Exception $e) {
+            return $data;
+        }
+    }
+
+    /**
      *シュミレーションの複製
      * 
      * @param array $params
